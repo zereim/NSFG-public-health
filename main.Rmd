@@ -9,6 +9,10 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Policy brief on the NSFG 2yr survey from 2022-2023
+
+Split into 3 groups, female, pregnant female, and male  
+
 # Female Data analysis
 ### Loading packages and data frame
 
@@ -23,10 +27,17 @@ data_female <- as_tibble(read.csv("NSFG-2022-2023-FemRespPUFData/NSFG_2022_2023_
 ```
 
 ## Codebook sections
-Section A 
-Section B 
-Section C
-Section D 
+A. Demographic Characteristics; Household Roster Summary Variables (not full roster); Childhood Background
+B. Pregnancy & Birth History; Adoption & Nonbiological Children
+C. Marital & Relationship History; 1st Sexual Intercourse
+D. Sterilizing Operations and Impaired Fecundity
+E. Contraceptive History and Pregnancy Wantedness
+F. Family Planning and Medical Services
+G. Desires and Intentions for Future Births
+H. Medical Help to Have a Baby; General & Reproductive Health
+I. Health insurance; Residence and place of birth; Religion; Past and Current work (R and current spouse/partner)
+J. Computer-Assisted Self-Interview (CASI) – Health status; body mass index; opposite-sex and same-sex behavior; sexual orientation and attraction; STD/HIV
+risk behaviors; adverse and positive childhood events; household income and sources of income; COVID-19 experience
 
 These are the most important
 Section E: contraception
@@ -41,5 +52,8 @@ sum(is.na(data_female))
 A lot of NA's to deal with too. 
 
 
-
+Some important things from the user guide: 
+"In addition to using sampling weights, researchers must use the design variables for the sampling stratum (VEST) and cluster (VECL) to obtain correct standard errors for their estimates." 
+"Stratum Variable [=] VEST; Cluster Variable [=] VECL; 
+Final post-stratified, fully adjusted case weight [=] WGT2022_2023"
 
