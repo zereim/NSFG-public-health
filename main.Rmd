@@ -40,6 +40,6 @@ sum(is.na(data_female))
 
 A lot of NA's to deal with too. 
 
-Section E is contraception
+
 
 
