@@ -9,6 +9,18 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+My personal goals for this project are to learn and showcase data pipeline skills such as cleaning and wrangling, while reinforcing statistics and visualization skills. 
+
+1. create a brief that collects my findings and supports policy changes or initiatives. 
+  a. cleaning
+  b. wrangling 
+  c. designing hypotheses I want to test
+  d. choosing the right variables 
+  e. conducting proper statistical tests with weights
+  f. reviewing the results
+  g. connecting this to policy initiatives
+  
+
 # Policy brief on the NSFG 2yr survey from 2022-2023
 
 Split into 3 groups, female, pregnant female, and male  
