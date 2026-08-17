@@ -1,0 +1,45 @@
+---
+title: "main"
+author: "Will Truskolaski"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Female Data analysis
+### Loading packages and data frame
+
+Making the data a tibble cause they're the best
+
+```{r}
+library(tidyverse)
+library(logger)
+library(janitor)
+
+data_female <- as_tibble(read.csv("NSFG-2022-2023-FemRespPUFData/NSFG_2022_2023_FemRespPUFData.csv"))
+```
+
+## Codebook sections
+Section A 
+Section B 
+Section C
+Section D 
+
+These are the most important
+Section E: contraception
+Section R: general reproduction 
+
+We've got 1912 variables here, so we're definitely gonna have to select what we want before doing any sort of data analysis. 
+
+```{r}
+sum(is.na(data_female))
+```
+
+A lot of NA's to deal with too. 
+
+Section E is contraception
+
+
