@@ -72,7 +72,12 @@ Final post-stratified, fully adjusted case weight [=] WGT2022_2023"
 
 Finding those variables
 ```{r}
-extract_column_names(data_female, starts_with)
+# Checking if there's the variables 
+extract_column_names(data_female, starts_with("VEST"))
+extract_column_names(data_female, starts_with("VECL"))
+# Finding out which index value these columns are 
+which(colnames(data_female) == "VEST")
+which(colnames(data_female) == "VECL")
 ```
 
 
