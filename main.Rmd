@@ -35,8 +35,10 @@ library(tidyverse)
 library(logger)
 library(janitor)
 library(datawizard)
+library(survey)
 
 data_female <- as_tibble(read.csv("NSFG-2022-2023-FemRespPUFData/NSFG_2022_2023_FemRespPUFData.csv"))
+log_info("Data loaded")
 ```
 
 ## Codebook sections
@@ -78,6 +80,33 @@ extract_column_names(data_female, starts_with("VECL"))
 # Finding out which index value these columns are 
 which(colnames(data_female) == "VEST")
 which(colnames(data_female) == "VECL")
+
+
 ```
+
+
+Creating the survey object 
+```{r}
+femsvy <- svydesign(
+  id = ~VECL,
+  strata = ~VEST,
+  weights = ~WGT2022_2023,
+  data = data_female,
+  nest = TRUE
+)
+
+
+```
+
+Research Questions: 
+
+Sex Education
+
+Research Question 1: 
+What is the relationship between number of sex ed topics covered and total number of sexual partners? 
+
+Research Question 2: 
+How does sex ed impact STD rates?
+
 
 
