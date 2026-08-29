@@ -103,7 +103,58 @@ Research Questions:
 Sex Education
 
 Research Question 1: 
-What is the relationship between number of sex ed topics covered and total number of sexual partners? 
+What is the relationship between grade when sex ed covers STDs and total number of sexual partners? 
+
+Variables SEDSTDG w/ LIFPRTNR
+
+```{r}
+# recoding the SEDSTDG variable to categorical
+femsvy$variables$SEDSTDG <- factor(femsvy$variables$SEDSTDG,
+  levels = c(3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 96, 99),
+  labels = c("3rd grade", "4th grade", "5th grade", "6th grade", 
+             "7th grade", "8th grade", "9th grade", "10th grade",
+             "11th grade", "12th grade", "1st yr college", "2nd yr college",
+             "Not in school", "Don't know")
+)
+log_info("variable recoded")
+STD_model <- svyglm(
+  LIFPRTNR ~ SEDSTDG,
+  design = femsvy,
+  family = gaussian()
+)
+summary(STD_model)
+
+# Create data with all grade levels
+pred_data <- expand_grid(
+  SEDSTDG = levels(femsvy$variables$SEDSTDG)
+)
+
+# Get predictions with standard errors
+pred <- predict(STD_model, newdata = pred_data, se.fit = TRUE)
+
+# Combine into a data frame
+pred_df <- pred_data |> 
+  mutate(
+    fit = pred$fit,
+    se = pred$se.fit,
+    ci_lower = fit - 1.96 * se,
+    ci_upper = fit + 1.96 * se
+  )
+
+# Plot
+ggplot(pred_df, aes(x = SEDSTDG, y = fit)) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), width = 0.2) +
+  labs(
+    x = "Grade When Received STD Instruction",
+    y = "Predicted Lifetime Opposite-Sex Partners",
+    title = "Effect of Sex Ed Timing on Lifetime Sexual Partners"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
 
 Research Question 2: 
 How does sex ed impact STD rates?
