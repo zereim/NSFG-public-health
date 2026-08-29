@@ -94,7 +94,7 @@ femsvy <- svydesign(
   data = data_female,
   nest = TRUE
 )
-
+log_info("Survey object created")
 
 ```
 
@@ -116,31 +116,49 @@ femsvy$variables$SEDSTDG <- factor(femsvy$variables$SEDSTDG,
              "11th grade", "12th grade", "1st yr college", "2nd yr college",
              "Not in school", "Don't know")
 )
+# DROP UNUSED FACTOR LEVELS
+femsvy$variables$SEDSTDG <- droplevels(femsvy$variables$SEDSTDG)
 log_info("variable recoded")
+```
+
+```{r}
 STD_model <- svyglm(
   LIFPRTNR ~ SEDSTDG,
   design = femsvy,
   family = gaussian()
 )
 summary(STD_model)
+```
 
-# Create data with all grade levels
+
+```{r}
+# Create data with all grade levels AS A FACTOR
 pred_data <- expand_grid(
   SEDSTDG = levels(femsvy$variables$SEDSTDG)
-)
-
-# Get predictions with standard errors
-pred <- predict(STD_model, newdata = pred_data, se.fit = TRUE)
-
-# Combine into a data frame
-pred_df <- pred_data |> 
+) %>%
   mutate(
-    fit = pred$fit,
-    se = pred$se.fit,
+    SEDSTDG = factor(SEDSTDG, levels = levels(femsvy$variables$SEDSTDG))
+  )
+```
+
+```{r}
+# Get predictions
+pred_fit <- predict(STD_model, newdata = pred_data)
+pred_se <- SE(predict(STD_model, newdata = pred_data))
+```
+
+```{r}
+# Combine into data frame
+pred_df <- pred_data %>%
+  mutate(
+    fit = as.numeric(pred_fit),
+    se = as.numeric(pred_se),
     ci_lower = fit - 1.96 * se,
     ci_upper = fit + 1.96 * se
   )
+```
 
+```{r}
 # Plot
 ggplot(pred_df, aes(x = SEDSTDG, y = fit)) +
   geom_point(size = 3) +
@@ -154,6 +172,10 @@ ggplot(pred_df, aes(x = SEDSTDG, y = fit)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 ```
+
+
+
+
 
 
 Research Question 2: 
