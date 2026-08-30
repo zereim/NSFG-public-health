@@ -159,6 +159,7 @@ pred_df <- pred_data %>%
 ```
 
 ```{r}
+# grouping variables, taking out the NA column, and making a new tibble
 raw_data <- femsvy$variables |>
   mutate(SEDSTDG = fct_collapse(SEDSTDG,
     "3rd-4th grade" = c("3rd grade", "4th grade"),
@@ -166,14 +167,21 @@ raw_data <- femsvy$variables |>
   )) |>
   filter(!is.na(SEDSTDG)) |>
   mutate(LIFPRTNR_log = log1p(LIFPRTNR))
-log_info("Data transformed")
 
-my_plot <- ggplot(raw_data, aes(x = SEDSTDG, y = LIFPRTNR_log)) +
+# Calculate means for each group
+means <- raw_data |>
+  group_by(SEDSTDG) |>
+  summarise(mean_log = mean(LIFPRTNR_log, na.rm = TRUE), .groups = 'drop') |>
+  mutate(x = as.numeric(SEDSTDG) - 0.35, xend = as.numeric(SEDSTDG) + 0.4)
+
+# Plot the means 
+ggplot(raw_data, aes(x = SEDSTDG, y = LIFPRTNR_log)) +
   geom_boxplot() +
+  geom_segment(data = means, aes(x = x, xend = xend, y = mean_log, yend = mean_log),
+               linetype = "dotted", color = "darkblue", linewidth = 1) +
   labs(y = "Log(Lifetime Sexual Partners)") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-log_info("Plot created")
 
 std_filename <- "Visualizations/RQ1_std_lifetime_partners_boxplot.pdf"
 ggsave(std_filename, my_plot, width = 8, height = 6, dpi = 300)
@@ -181,8 +189,8 @@ log_info(paste0("Plot saved as ", std_filename))
 ```
 I made a few choices for this data. The first is the grouping of 3rd with 4th grade, and 1st with 2nd year of college. This is because the groups were too small to be analyzed by themselves. This move first makes usable data out of smaller unusable groups, but it reduces the granularity of the data. The second choice I made was to perform a log transformation on the data to improve readability by reducing the impact of outliers. 
 
-
-
+Results: 
+The graphs show data that is skewed towards 0 
 
 
 Research Question 2: 
