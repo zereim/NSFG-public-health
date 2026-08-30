@@ -190,11 +190,18 @@ log_info(paste0("Plot saved as ", std_filename))
 I made a few choices for this data. The first is the grouping of 3rd with 4th grade, and 1st with 2nd year of college. This is because the groups were too small to be analyzed by themselves. This move first makes usable data out of smaller unusable groups, but it reduces the granularity of the data. The second choice I made was to perform a log transformation on the data to improve readability by reducing the impact of outliers. 
 
 Results: 
-The graphs show data that is skewed towards 0 
+The graphs show data that is skewed to the right. 
 
 
 Research Question 2: 
 How does sex ed impact STD rates?
+Need to find another research question, because the variables do not exist.
 
-
-
+```{r}
+STD_CON_model <- svyglm(
+  ANYMTHD ~ SEDSTDG,
+  design = femsvy,
+  family = gaussian()
+)
+summary(STD_model)
+```
