@@ -159,15 +159,16 @@ pred_df <- pred_data %>%
 ```
 
 ```{r}
-# Plot
-ggplot(pred_df, aes(x = SEDSTDG, y = fit)) +
-  geom_point(size = 3) +
-  geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper), width = 0.2) +
-  labs(
-    x = "Grade When Received STD Instruction",
-    y = "Predicted Lifetime Opposite-Sex Partners",
-    title = "Effect of Sex Ed Timing on Lifetime Sexual Partners"
-  ) +
+raw_data <- femsvy$variables
+
+raw_data_combined <- raw_data %>%
+  mutate(SEDSTDG = fct_collapse(SEDSTDG,
+    "3rd-4th grade" = c("3rd grade", "4th grade"),
+    "1st-2nd yr college" = c("1st yr college", "2nd yr college")
+  ))
+
+ggplot(raw_data_combined, aes(x = SEDSTDG, y = LIFPRTNR)) +
+  geom_boxplot() +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
