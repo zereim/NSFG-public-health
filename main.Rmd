@@ -175,7 +175,7 @@ my_plot <- ggplot(raw_data, aes(x = SEDSTDG, y = LIFPRTNR_log)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 log_info("Plot created")
 
-std_filename <- "Visualizations/std_lifetime_partners_boxplot.pdf"
+std_filename <- "Visualizations/RQ1_std_lifetime_partners_boxplot.pdf"
 ggsave(std_filename, my_plot, width = 8, height = 6, dpi = 300)
 log_info(paste0("Plot saved as ", std_filename))
 ```
