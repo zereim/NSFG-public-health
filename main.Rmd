@@ -194,14 +194,43 @@ The graphs show data that is skewed to the right.
 
 
 Research Question 2: 
-How does sex ed impact STD rates?
-Need to find another research question, because the variables do not exist.
+
+
+Research Question 3: 
+How does sex ed impact contraception usage?
+
+first have to change the variables coded as 1 2 to 0 1 for the quasibinomial modeling. 
+Removing any NAs from both variables and small sample groups  
+```{r}
+femsvy$variables$ANYMTHD_binary <- as.numeric(femsvy$variables$ANYMTHD == 1)
+
+# Filter out NAs in both variables
+raw_data_for_con <- femsvy$variables |>
+  filter(!is.na(SEDSTDG) & !is.na(ANYMTHD_binary)) |>
+  filter(!SEDSTDG %in% c("1st yr college", "2nd yr college", "Don't know"))
+```
+
 
 ```{r}
-STD_CON_model <- svyglm(
-  ANYMTHD ~ SEDSTDG,
-  design = femsvy,
-  family = gaussian()
+femsvy_con <- svydesign(
+  ids = ~VECL,
+  strata = ~VEST, 
+  weights = ~WGT2022_2023,
+  data = raw_data_for_con,
+  nest = TRUE
 )
-summary(STD_model)
+
+STD_CON_model <- svyglm(
+  ANYMTHD_binary ~ SEDSTDG,
+  design = femsvy_con,
+  family = quasibinomial()
+)
+
+summary(STD_CON_model)
 ```
+Not seeing a lot of significance with the data. 
+Seeing if the test as a whole is significant in any way
+```{r}
+regTermTest(STD_model, ~SEDSTDG)
+```
+
