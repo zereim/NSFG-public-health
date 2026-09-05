@@ -175,7 +175,7 @@ means <- raw_data |>
   mutate(x = as.numeric(SEDSTDG) - 0.35, xend = as.numeric(SEDSTDG) + 0.4)
 
 # Plot the means 
-ggplot(raw_data, aes(x = SEDSTDG, y = LIFPRTNR_log)) +
+my_plot <- ggplot(raw_data, aes(x = SEDSTDG, y = LIFPRTNR_log)) +
   geom_boxplot() +
   geom_segment(data = means, aes(x = x, xend = xend, y = mean_log, yend = mean_log),
                linetype = "dotted", color = "darkblue", linewidth = 1) +
@@ -192,11 +192,9 @@ I made a few choices for this data. The first is the grouping of 3rd with 4th gr
 Results: 
 The graphs show data that is skewed to the right. 
 
+---
 
 Research Question 2: 
-
-
-Research Question 3: 
 How does sex ed impact contraception usage?
 
 first have to change the variables coded as 1 2 to 0 1 for the quasibinomial modeling. 
@@ -210,6 +208,7 @@ raw_data_for_con <- femsvy$variables |>
   filter(!SEDSTDG %in% c("1st yr college", "2nd yr college", "Don't know"))
 ```
 
+Making a new survey model focused on contraception that tests any method of contraception vs grade level when STD education received. 
 
 ```{r}
 femsvy_con <- svydesign(
@@ -231,6 +230,11 @@ summary(STD_CON_model)
 Not seeing a lot of significance with the data. 
 Seeing if the test as a whole is significant in any way
 ```{r}
-regTermTest(STD_model, ~SEDSTDG)
+regTermTest(STD_CON_model, ~SEDSTDG)
+summary(STD_CON_model)
 ```
 
+Slight correlation but not enough to reject null hypothesis. 
+
+TOTINCR (total income of R's family) 
+ANYMTHD_binary (use contraception or not)
