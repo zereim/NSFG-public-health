@@ -238,3 +238,5 @@ Slight correlation but not enough to reject null hypothesis.
 
 TOTINCR (total income of R's family) 
 ANYMTHD_binary (use contraception or not)
+
+So there isn't a statistically significant relationship between contraception usage and when STDs are taught in sex ed. 
